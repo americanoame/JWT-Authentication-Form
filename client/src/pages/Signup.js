@@ -1,20 +1,56 @@
-import React from 'react'
+// state to store the email e password
+import React, { useState } from "react"
+
+// import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify';
+import axios from "axios";
 
 export default function Signup() {
+  const [values, setValues] = useState({
+    email: '',
+    password: '',
+  });
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+      try {
+        const { data } = await axios.post("http://localhost:4000/sinup", {
+          ...values,
+        });
+      } catch (err) {
+        console.log(err);
+      }
+  };
+
   return (
     <div className="container my-5">
       <div className="d-flex justify-content-center">
         <div className="col-12 col-sm-8 col-lg-6 mx-auto mt-5">
           <h1 className="--text-center">SignUp</h1>
-          <form>
+
+          <form onSubmit={(e) => handleSubmit(e)}>
+
             <div className="mb-3">
               <label htmlFor="email">Email</label>
-              <input type="text" name="email" placeholder="Email" required />
+              <input
+                type="email" name="email"
+                placeholder="Email"
+                onChange={(e) =>
+                  setValues({ ...values, [e.target.name]: e.target.value })
+                }
+                required />
             </div>
+
             <div className="mb-3">
-              <label htmlFor="email">Password</label>
-              <input type="password" name="password" placeholder="Password" required />
+            <label htmlFor="email">Password</label>
+            <input
+                type="password" name="password"
+                placeholder="Password"
+                onChange={(e) =>
+                  setValues({ ...values, [e.target.name]: e.target.value })
+                }
+                required />
             </div>
 
             <div>
@@ -24,8 +60,8 @@ export default function Signup() {
               Already have an account? <Link to='/login'>Login</Link>
             </span>
           </form>
+          <ToastContainer />
         </div>
-
       </div>
     </div>
   )
