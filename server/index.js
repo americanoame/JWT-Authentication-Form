@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require("cors");
 const mongoose = require("mongoose");
+const AuthRoutes = require("./Routes/AuthRoutes");
+const cookieParser = require("cookie-parser");
 
 const app = express();
 
@@ -33,7 +35,9 @@ app.use(
 
 );
 
+app.use(cookieParser);
 app.use(express.json());
+app.use('/', AuthRoutes);
 
 
 // module.exports = mongoose.connection;
